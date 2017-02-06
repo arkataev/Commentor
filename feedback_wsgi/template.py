@@ -15,7 +15,13 @@ class Renderer:
             block = self._get_block(self._read_template(fname))
             html = template.substitute(block)
         else: html = self._read_template(fname)
+        if 'embed_html' in kwargs: kwargs['embed'] = self._embed_html(kwargs)
         return self._map_vars(html, **kwargs)
+
+    def _embed_html(self, data):
+        emb_html = data.pop('embed_html')
+        mapped_html = self._map_vars(emb_html, **data.pop('vars'))
+        return mapped_html
 
     def _map_vars(self, html, **kwargs):
         template = self._get_template(html)

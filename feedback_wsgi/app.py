@@ -1,4 +1,4 @@
-from .response import render, page_not_found
+from .response import page_not_found
 from functools import partial
 import pickle
 from . import controller
@@ -8,7 +8,7 @@ import os
 def dispatch(route):
     return {
         '/comment': partial(controller.comment, csrf=_set_token()),
-        '/stats': partial(render, fname='stats.html'),
+        '/stats': controller.view_stats,
         '/view': controller.view_comments,
         '/save_comment': controller.add_comment,
         '/delete_comment': controller.delete_comment,
@@ -17,7 +17,7 @@ def dispatch(route):
 
 def validate_token(token):
     with open('cache.txt', 'rb+') as f:
-        cached_token = pickle.load(f)['token']
+        cached_token = pickle.load(f).get('token')
         if cached_token == token:
             f.truncate(0)
             return True
