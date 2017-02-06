@@ -1,0 +1,15 @@
+@extends(layout.html)
+@block('content')
+<form action="/save_comment" method="post">
+    <input type="hidden" name="csrf" value="$csrf">
+    <input type="text" name="last_name" >
+    <input type="text" name="first_name" >
+    <input type="text" name="fam_name">
+    <select name="region" id="region" ></select>
+    <select name="city" id="city" ></select>
+    <input type="tel" name="phone">
+    <input type="email" name="email">
+    <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Please, leave a comment here"></textarea>
+    <button type="submit" value="Send">Send</button>
+</form>
+@endblock

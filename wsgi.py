@@ -1,10 +1,12 @@
-def app(environ, start_response):
-    """Simplest possible application object"""
-    data = b'Hello, World!\n'
-    status = '200 OK'
-    response_headers = [
-        ('Content-type','text/plain'),
-        ('Content-Length', str(len(data)))
-    ]
-    start_response(status, response_headers)
-    return iter([data])
+from feedback_wsgi import app
+import cgi
+
+
+def run(environ, start_response):
+    route = environ['PATH_INFO']
+    form = cgi.FieldStorage(fp=environ['wsgi.input'], environ=environ)
+    action = app.dispatch(route)
+    data = {'token': form.getvalue('csrf')} # testing csrf token
+    status, headers, response_body = action(**data)
+    start_response(status, headers)
+    return iter([response_body.encode()])
