@@ -1,10 +1,10 @@
-from .response import json_response, render
+from .response import success_json, render, restricted_json, page_not_found
 from .request import Request
 
 
 def add_comment(request:'Request'):
-    text = "valid" if request.valid_token else 'Not valid'
-    return json_response(**{'text': text})
+    if not request.valid_token: return restricted_json({'error':'token mismatch'})
+    return success_json({'text': 'hello'})
 
 def comment(request:'Request', **kwargs):
     return render('comment.html', **kwargs)
@@ -22,6 +22,9 @@ def get_stats(request:'Request'):
 
 def get_locations(request:'Request'):
     pass
+
+def not_found(request:'Request'):
+    return page_not_found('not_found.html')
 
 def view_comments(request:'request.Request'):
     html = '<h1>$text</h1>\n<p>$text1</p>'

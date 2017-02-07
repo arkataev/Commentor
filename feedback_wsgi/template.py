@@ -2,11 +2,14 @@ from string import Template
 import os
 import re
 
+STATIC_FOLDER  = os.path.abspath('static')
+TEMPLATE_FOLDER = os.path.abspath('static/templates')
 
 class Renderer:
 
     def __init__(self):
-        self.template_folder = os.path.join('', 'static/templates')
+        self.template_folder = STATIC_FOLDER
+        # self.static_folder = os.path.join('','static')
 
     def render(self, fname, **kwargs):
         extends = self._extends(fname)
@@ -39,7 +42,7 @@ class Renderer:
     def _template_path(self, fname):
         path = os.path.join(self.template_folder, fname)
         if not os.path.exists(path):
-            raise FileNotFoundError('Template {} not found at {}'.format(fname, path))
+            raise FileNotFoundError('File {} not found at {}'.format(fname, path))
         return path
 
     def _extends(self, fname:str) -> str or bool:

@@ -26,8 +26,12 @@ def render(fname, **kwargs):
     return Renderer().render(fname, **kwargs)
 
 @response(content_type='application/json')
-def json_response(**kwargs):
-    return json.dumps(kwargs)
+def success_json(data):
+    return json.dumps(data)
+
+@response(status='402',content_type='application/json')
+def restricted_json(data):
+    return json.dumps(data)
 
 @response(status='404')
 def page_not_found(fname, **kwargs):
