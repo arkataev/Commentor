@@ -1,10 +1,15 @@
 from .response import success_json, render, restricted_json, page_not_found
 from .request import Request
-
+from . import database as db
 
 def add_comment(request:'Request'):
     if not request.valid_token: return restricted_json({'error':'token mismatch'})
-    return success_json({'text': 'hello'})
+    user_fields = ['last_name', 'first_name', 'fam_name', 'phone', 'email']
+    city = request.post.getvalue('city')
+    region = request.post.getvalue('region')
+    comment = request.post.getvalue('comment')
+    user_data = dict(zip(user_fields,[request.post.getvalue(field) for field in user_fields]))
+    return success_json(user_data)
 
 def comment(request:'Request', **kwargs):
     return render('comment.html', **kwargs)
@@ -20,7 +25,12 @@ def get_stats(request:'Request'):
     # returns json object with statistics
     pass
 
-def get_locations(request:'Request'):
+
+def get_regions(request:'Request'):
+    regions = dict(db.get_regions())
+    return success_json(regions)
+
+def get_cities(request:'Request'):
     pass
 
 def not_found(request:'Request'):

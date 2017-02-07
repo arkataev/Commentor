@@ -16,7 +16,7 @@ def response(status='200', content_type='text/html', cookie:dict=None):
                 for key, value in cookie.items():
                     response_headers.append(('Set-Cookie', str(key) + '={}'.format(value)))
             r_body = func(*args, **kwargs)
-            response_headers.append(('Content-Length', str(len(r_body))))
+            response_headers.append(('Content-Length', str(len(r_body.encode()))))
             return status, response_headers, r_body
         return response_body
     return response_wrapper
@@ -27,7 +27,7 @@ def render(fname, **kwargs):
 
 @response(content_type='application/json')
 def success_json(data):
-    return json.dumps(data)
+    return json.dumps(data, ensure_ascii=False)
 
 @response(status='402',content_type='application/json')
 def restricted_json(data):

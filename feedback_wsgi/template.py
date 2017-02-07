@@ -3,13 +3,11 @@ import os
 import re
 
 STATIC_FOLDER  = os.path.abspath('static')
-TEMPLATE_FOLDER = os.path.abspath('static/templates')
 
 class Renderer:
 
     def __init__(self):
         self.template_folder = STATIC_FOLDER
-        # self.static_folder = os.path.join('','static')
 
     def render(self, fname, **kwargs):
         extends = self._extends(fname)
