@@ -13,7 +13,7 @@ def dispatch(request:'request.Request'):
         '/view': controller.view_comments,
         '/save_comment': controller.add_comment,
         '/delete_comment': controller.delete_comment,
-        '/get_regions': controller.get_regions,
+        '/get_locations': controller.get_locations,
     }.get(request.route, controller.not_found)
 
 def serve_statics(request:'request.Request'):

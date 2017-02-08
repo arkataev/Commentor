@@ -1,23 +1,30 @@
 
 
-window.onload = getRegions
+window.onload = loadCities
+var region = document.getElementById('region');
+region.addEventListener('change', loadCities)
 
-function getRegions(e) {
-    e.preventDefault()
-    var region = document.getElementById('region')
+function loadCities() {
+    rid = region.options[region.selectedIndex].value
+    return getLocations(rid)
+}
+
+function getLocations(regionId) {
+    var rid = 'region_id=' + regionId,
+        city = document.getElementById('city');
+    city.innerHTML = ''
     var callback = function (data) {
         var r = JSON.parse(data)
         for (var attr in r){
             var option = document.createElement('option')
-            option.setAttribute('id', 'region_' + attr)
+            option.setAttribute('id', 'city_' + attr)
             option.setAttribute('value',attr)
             option.innerHTML = r[attr]
-            region.appendChild(option)
+            city.appendChild(option)
         }
     }
-    ajaxRequest('/get_regions', '', callback)
+    ajaxRequest('/get_locations', rid , callback)
 }
-
 
 function ajaxRequest(url, data, callback) {
     var xhr = new XMLHttpRequest();
@@ -27,5 +34,6 @@ function ajaxRequest(url, data, callback) {
         }
     }
     xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     xhr.send(data)
 }
