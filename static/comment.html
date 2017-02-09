@@ -1,15 +1,16 @@
 @extends(layout.html)
 @block('content')
+<h1>Leave a Comment here, friend</h1>
 <form id='add_comment'action="/save_comment" method="post" content="multipart/form-data">
     <input type="hidden" name="csrf" value="$csrf">
-    <input type="text" name="last_name" >
-    <input type="text" name="first_name" >
+    <input type="text" name="last_name" required>
+    <input type="text" name="first_name" required>
     <input type="text" name="fam_name">
     <select name="region" id="region" >$regions</select>
     <select name="city" id="city" ></select>
     <input type="tel" name="phone">
-    <input type="email" name="email">
-    <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Please, leave a comment here"></textarea>
+    <input type="email" name="email" required>
+    <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Type your comment here"></textarea>
     <button id='send_comment'type="submit" value="Send">Send</button>
 </form>
 @endblock

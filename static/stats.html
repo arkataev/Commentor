@@ -1,2 +1,11 @@
-<h1>Statistics View</h1>
-$text
+@extends(layout.html)
+@block('content')
+<h1>Comments statistics</h1>
+<table id="stats">
+    <tr class="headers">
+        <th>Location</th>
+        <th>Comments</th>
+    </tr>
+    $rows
+</table>
+@endblock
