@@ -23,7 +23,7 @@ def save_comment(user_id, comment):
         return cur.lastrowid
     except sqlite3.IntegrityError as e:
         print(e.args)
-        return False
+        BaseException("Error occured, while saving new comment")
 
 def save_user(data):
     stmt = "INSERT INTO users (fname,lname,phone,email,city_id) VALUES (?, ?, ?, ?, ?)"
@@ -33,7 +33,7 @@ def save_user(data):
         return cur.lastrowid
     except sqlite3.IntegrityError as e:
         print(e.args)
-        return False
+        raise BaseException("Error occured, while saving new user")
 
 def get_comments():
     stmt = """
@@ -55,7 +55,7 @@ def delete_comment(uid):
     except sqlite3.DatabaseError:
         pass
 
-def get_stats():
+def get_region_stats():
     stmt = """
     SELECT * FROM (
       SELECT region, COUNT(region) as comments FROM (
@@ -72,3 +72,6 @@ def get_stats():
     ) WHERE comments > 1"""
     cur.execute(stmt)
     return cur.fetchall()
+
+def get_city_stats():
+    pass

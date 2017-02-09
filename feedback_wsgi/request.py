@@ -35,7 +35,6 @@ class Request:
         self.method = env['REQUEST_METHOD']
         self.__query = parse_qs(env['QUERY_STRING'])
         self.__post = cgi.FieldStorage(fp=env['wsgi.input'], environ=env)
-        self.mime_type = None
 
     def _validate_token(self,token):
         with open('cache.txt', 'rb+') as f:

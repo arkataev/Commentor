@@ -3,6 +3,9 @@
 
 var region = document.getElementById('region');
 var deleteCommentButtons = document.querySelectorAll('#comments li button');
+var sendCommentBtn = document.getElementById('send_comment')
+
+sendCommentBtn.addEventListener('click', sendComment)
 
 if (region){
     window.onload = loadCities;
@@ -15,6 +18,13 @@ if (deleteCommentButtons) {
             return deleteComment(e.target)
         })
     })
+}
+
+function sendComment(e) {
+    e.preventDefault()
+    var form = new FormData();
+    var btn = e.target;
+
 }
 
 function loadCities() {

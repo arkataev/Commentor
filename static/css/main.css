@@ -1,3 +1,97 @@
 * {
-    background: darkgray;
+    background: #343434;
+    font-family: Arial;
+    font-weight: 400;
+}
+
+#wrapper {
+    width: 60%;
+    margin: 0 auto;
+}
+#comment {
+    width: 25%;
+    margin: auto;
+}
+
+#add_comment{
+    width:100%;
+    display: block;
+    margin: auto;
+}
+
+#add_comment input, select{
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    box-shadow: none;
+    color: #EADEDA;
+    margin-bottom: 15px;
+    background: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #FCD68A;
+    font-size: 1.1em;
+}
+select option {
+    background: #343434;
+    border: none;
+    font-weight: 600;
+}
+
+label {
+    color: #EADEDA;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 0.8em;
+}
+
+textarea {
+    width: 85%;
+    padding: 20px;
+    color: #EADEDA;
+}
+
+#add_comment select {
+    width: 100%;
+}
+
+h1 {
+    color: #EADEDA;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 6.5px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid;
+    padding: 10px 0;
+}
+
+button {
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    background: #D33F49;
+    padding: 10px;
+    color: #EADEDA;
+    text-transform: uppercase;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 15px
+}
+
+.links {
+    padding:0;
+    text-align: center;
+}
+
+.links li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+a {
+    color: #D33F49;
+    text-decoration: none;
+    text-align: left;
 }

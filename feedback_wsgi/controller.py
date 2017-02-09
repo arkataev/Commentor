@@ -3,36 +3,35 @@ from .request import Request
 from . import database as db
 import re
 
+
 def validate_comment(func):
     errors = []
-    required = ['last_name', 'first_name', 'email', 'comment', 'fam_name']
+    required = ['last_name', 'first_name', 'email', 'comment']
     valid_email = lambda email: re.search(r'^\S+@\D+\.[a-z]{2,}$', email)
-
+    valid_phone = lambda phone: re.search(r'^\+?\d?\(\d{3}\)\d{7}$', phone)
     def validator(request:'Request'):
         if not request.valid_token: return restricted_json({'error': 'token mismatch'})
-        missing = [i for i in required if not request.post.getvalue(i)]
-        if missing: errors.extend([(f, 'required') for f in missing])
-        if not valid_email(request.post.getvalue('email')): errors.append(('email','invalid'))
+        missing_fields = [i for i in required if not request.post.getvalue(i)]
+        if missing_fields: errors.extend([(f, 'required') for f in missing_fields])
+        if not valid_email(request.post.getvalue('email')): errors.append(('email', 'invalid'))
+        if not valid_phone(request.post.getvalue('phone')): errors.append(('phone', 'invalid'))
         return func(request) if not errors else restricted_json({'errors': dict(errors)})
     return validator
 
 @validate_comment
 def add_comment(request:'Request'):
     error = False
-    message = 'Comment Saved!'
+    message = 'Comment successfully added!'
     user_fields = ['last_name', 'first_name', 'fam_name', 'phone', 'email', 'city']
     user_data = dict(zip(user_fields,[request.post.getvalue(field) for field in user_fields]))
-    user_id = db.save_user(user_data)
     comment = request.post.getvalue('comment')
-    if user_id: comment_id = db.save_comment(user_id, comment)
-    if not user_id or not comment_id:
-        error = True
-        message = 'Sorry, error occured while saving new comment'
+    try: db.save_comment(db.save_user(user_data), comment)      # save user and use returned user_id to save comment
+    except BaseException as e: message = str(e)
     return success_json({'error': error, 'message': message})
 
 def comment(request:'Request', **kwargs):
     regions = dict(db.get_regions())
-    html = ''
+    html = str()
     for uid in regions:
         html += '<option id={id} value={id}>{text}</option>\n'.format(**{'id':uid, 'text':regions[uid]})
     kwargs.update({'regions': html})
@@ -43,8 +42,8 @@ def delete_comment(request:'Request'):
     return success_json({'error':False, 'message': 'Comment Deleted'})
 
 def view_stats(request:'Request'):
-    stats = dict(db.get_stats())
-    html = '';
+    stats = dict(db.get_region_stats())
+    html = str();
     for s in stats:
         html += "<tr><td class='rname'><a href=/r_details>{region}</a></td>" \
                 "<td class='count'>{count}</td></tr>".format(region=s,count = stats[s])
@@ -59,7 +58,7 @@ def not_found(request:'Request'):
 
 def view_comments(request:'request.Request'):
     comments = db.get_comments()
-    html = ''
+    html = str()
     for c in comments:
         html += '<li class="comment"><span class="user">{fname} {lname}</span><p>{comment}</p>' \
                 '<button data-uid="{uid}">Удалить</button></li>\n'.format(
