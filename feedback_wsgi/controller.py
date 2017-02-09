@@ -1,9 +1,23 @@
 from .response import success_json, render, restricted_json, page_not_found
 from .request import Request
 from . import database as db
+import re
 
+def validate_comment(func):
+    errors = []
+    required = ['last_name', 'first_name', 'email', 'comment', 'fam_name']
+    valid_email = lambda email: re.search(r'^\S+@\D+\.[a-z]{2,}$', email)
+
+    def validator(request:'Request'):
+        if not request.valid_token: return restricted_json({'error': 'token mismatch'})
+        missing = [i for i in required if not request.post.getvalue(i)]
+        if missing: errors.extend([(f, 'required') for f in missing])
+        if not valid_email(request.post.getvalue('email')): errors.append(('email','invalid'))
+        return func(request) if not errors else restricted_json({'errors': dict(errors)})
+    return validator
+
+@validate_comment
 def add_comment(request:'Request'):
-    if not request.valid_token: return restricted_json({'error':'token mismatch'})
     error = False
     message = 'Comment Saved!'
     user_fields = ['last_name', 'first_name', 'fam_name', 'phone', 'email', 'city']
@@ -32,10 +46,8 @@ def view_stats(request:'Request'):
     stats = dict(db.get_stats())
     html = '';
     for s in stats:
-        html += "<tr><td  class='rname'><a href=/r_details>{region}</a></td><td class='count'>{count}</td></tr>".format(
-            region=s,
-            count = stats[s]
-        )
+        html += "<tr><td class='rname'><a href=/r_details>{region}</a></td>" \
+                "<td class='count'>{count}</td></tr>".format(region=s,count = stats[s])
     return render('stats.html', rows=html)
 
 def get_locations(request:'Request'):
