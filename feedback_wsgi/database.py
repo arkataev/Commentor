@@ -60,8 +60,9 @@ def delete_comment(uid):
 def get_region_stats():
     stmt = """
     SELECT * FROM (
-      SELECT region, COUNT(region) as comments FROM (
+      SELECT uid, region, COUNT(region) as comments FROM (
         SELECT
+          regions.uid as uid,
           regions.rname AS region,
           cities.cname  AS city,
           comments.text AS comment,
@@ -71,9 +72,25 @@ def get_region_stats():
           JOIN cities ON users.city_id = cities.uid
           JOIN regions ON cities.region_id = regions.uid
       ) GROUP BY region
-    ) WHERE comments > 1"""
+    ) WHERE comments > 0"""
     cur.execute(stmt)
     return cur.fetchall()
 
-def get_city_stats():
-    pass
+def get_city_stats(region_id):
+    stmt = """
+    SELECT * FROM (
+        SELECT uid, city, COUNT(city) as comments FROM (
+        SELECT
+          cities.uid as uid,
+          cities.cname  AS city,
+          comments.text AS comment
+        FROM comments
+          JOIN users ON comments.user_id = users.uid
+          JOIN cities ON users.city_id = cities.uid
+          JOIN regions ON cities.region_id = regions.uid
+        WHERE cities.region_id = ?
+      ) GROUP BY city
+    ) WHERE comments > 0
+    """
+    cur.execute(stmt, (region_id,) )
+    return cur.fetchall()

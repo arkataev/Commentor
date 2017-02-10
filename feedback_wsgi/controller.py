@@ -5,12 +5,11 @@ import re
 
 
 def validate_comment(func):
-    errors = []
     required = ['last_name', 'first_name', 'email', 'comment']
     valid_email = lambda email: re.search(r'^\S+@\D+\.[a-z]{2,}$', email)
     valid_phone = lambda phone: re.search(r'^\+?\d?\(\d{3}\)\d{7}$', phone)
     def validator(request:'Request'):
-        if not request.valid_token: return restricted_json({'error': 'token mismatch'})
+        errors = []
         missing_fields = [i for i in required if not request.post.getvalue(i)]
         if missing_fields: errors.extend([(f, 'required') for f in missing_fields])
         if not valid_email(request.post.getvalue('email')): errors.append(('email', 'invalid'))
@@ -20,12 +19,13 @@ def validate_comment(func):
 
 @validate_comment
 def add_comment(request:'Request'):
+    if not request.valid_token: return restricted_json({'error': 'token mismatch'})
     error = False
     message = 'Comment successfully added!'
     user_fields = ['last_name', 'first_name', 'fam_name', 'phone', 'email', 'city']
     user_data = dict(zip(user_fields,[request.post.getvalue(field) for field in user_fields]))
     comment = request.post.getvalue('comment')
-    try: db.save_comment(db.save_user(user_data), comment)      # save user then use returned user_id to save comment
+    try: db.save_comment(db.save_user(user_data), comment)
     except BaseException as e:
         error = True
         message = str(e)                 # TODO:: Обработка ошибки БД
@@ -44,11 +44,15 @@ def delete_comment(request:'Request'):
     return success_json({'error':False, 'message': 'Comment Deleted'})
 
 def view_stats(request:'Request'):
-    stats = dict(db.get_region_stats())
-    html = str();
+    q = request.query
+    region = 'region' in q
+    stats = db.get_city_stats(q['region'][0]) if region else db.get_region_stats()
+    html = str()
     for s in stats:
-        html += "<tr><td class='rname'><a href=/r_details>{region}</a></td>" \
-                "<td class='count'>{count}</td></tr>".format(region=s,count = stats[s])
+        html += "<tr><td class='location'>"
+        if not region: html += "<a href=/stats?region={uid}>{region}</a>".format(region=s[1],uid=s[0])
+        else: html += "{region}".format(region=s[1])
+        html += "</td><td class='count'>{count}</td></tr>".format(count=s[2])
     return render('stats.html', rows=html)
 
 def get_locations(request:'Request'):
@@ -58,11 +62,11 @@ def get_locations(request:'Request'):
 def not_found(request:'Request'):
     return page_not_found('not_found.html')
 
-def view_comments(request:'request.Request'):
+def view_comments(request:'Request'):
     comments = db.get_comments()
     html = str()
     for c in comments:
         html += '<li class="comment"><span class="user">{fname} {lname}</span><p>{comment}</p>' \
                 '<button data-uid="{uid}">Удалить</button></li>\n'.format(
-            fname=c[2], lname=c[3], comment=c[1], uid=c[0])
+                fname=c[2], lname=c[3], comment=c[1], uid=c[0])
     return render('view.html', comments=html)

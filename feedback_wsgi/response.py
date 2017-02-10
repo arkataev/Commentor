@@ -5,7 +5,7 @@ import os
 import pickle
 
 
-def response(status='200', content_type='text/html', cookie:dict=None):
+def response(status:str='200', content_type:str='text/html', cookie:dict=None):
     def response_wrapper(func):
         def response_body(*args, **kwargs):
             response_headers = [

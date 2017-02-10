@@ -4,7 +4,6 @@
 var region = document.getElementById('region');
 var deleteCommentButtons = document.querySelectorAll('#comments li button');
 var sendCommentBtn = document.getElementById('send_comment')
-
 sendCommentBtn.addEventListener('click', sendComment)
 
 if (region){
@@ -25,13 +24,27 @@ function sendComment(e) {
     var btn = e.target;
     var form_data = ''
     var form = new FormData(document.getElementById('add_comment'));
-    for (var key of form.keys()){form_data += key+'='+form.get(key) + '&'}
-
-    var callback = function (data) {
-        alert(data)
+    for (var key of form.keys()){
+        var elem = document.querySelector('[name=' + key + ']')
+        if (key=='comment') {elem.style.borderColor = '#FCD68A'}
+        else{elem.style.borderBottomColor = '#FCD68A'}
+        form_data += key+'='+form.get(key) + '&'
     }
 
-    ajaxRequest('/save_comment', form_data, callback)
+    var callback = function (data) {
+        btn.style.background = 'green'
+        btn.innerHTML = 'Success'
+    }
+    
+    var fallback = function (data) {
+        var data = JSON.parse(data)
+        for (var key in data.errors){
+            var elem = document.querySelector('[name=' + key + ']')
+            if (key=='comment') {elem.style.borderColor = '#D33F49'}
+            else{elem.style.borderBottomColor = '#D33F49'}
+        }
+    }
+    ajaxRequest('/save_comment', form_data, callback, fallback)
 }
 
 function loadCities() {
@@ -53,7 +66,7 @@ function getLocations(regionId) {
             city.appendChild(option);
         }
     };
-    ajaxRequest('/get_locations', rid , callback);
+    ajaxRequest('/get_locations', rid , callback, '');
 }
 
 function deleteComment(button){
@@ -62,16 +75,16 @@ function deleteComment(button){
     var callback = function () {
         comments.removeChild(button.parentNode)
     };
-    ajaxRequest('/delete_comment', cuid, callback);
+    ajaxRequest('/delete_comment', cuid, callback, '');
 }
 
-function ajaxRequest(url, data, callback) {
+function ajaxRequest(url, data, callback, fallback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             return callback(this.responseText);
         }else if (this.readyState == 4 && this.status == 402) {
-            return callback(this.responseText);
+            return fallback(this.responseText);
         }
     };
     xhr.open('POST', url, true);
