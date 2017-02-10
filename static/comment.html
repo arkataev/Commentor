@@ -2,23 +2,23 @@
 @block('content')
 <div id="comment">
     <h1>Commentor</h1>
-    <form id='add_comment'action="/save_comment" method="post" content="multipart/form-data">
+    <form id='add_comment'action="/save_comment" method="post">
         <input type="hidden" name="csrf" value="$csrf">
-        <label for="last_name">Last Name</label>
+        <label for="last_name">Last Name*</label>
         <input type="text" id="last_name" name="last_name" required placeholder="Doe">
-        <label for="first_name">First Name</label>
+        <label for="first_name">First Name*</label>
         <input type="text" name="first_name" id="first_name" required placeholder="John">
         <label for="fam_name">Famaly Name</label>
         <input type="text" name="fam_name" id="fam_name" placeholder="Martin">
         <label for="mobile">Mobile</label>
         <input type="tel" name="phone" id="mobile" placeholder="(xxx)xxxxxxx">
-        <label for="email">Email</label>
+        <label for="email">Email*</label>
         <input type="email" name="email" id="email" required placeholder="name@domain.com">
         <label for="region">Region</label>
         <select name="region" id="region" >$regions</select>
         <label for="city">City</label>
         <select name="city" id="city" ></select>
-        <label for="comment_box">Comment</label>
+        <label for="comment_box">Comment*</label>
         <textarea name="comment" id="comment_box" cols="30" rows="10" placeholder="Type your comment here"></textarea>
         <button id='send_comment'type="submit" value="Send">Send</button>
     </form>

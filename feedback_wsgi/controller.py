@@ -25,8 +25,10 @@ def add_comment(request:'Request'):
     user_fields = ['last_name', 'first_name', 'fam_name', 'phone', 'email', 'city']
     user_data = dict(zip(user_fields,[request.post.getvalue(field) for field in user_fields]))
     comment = request.post.getvalue('comment')
-    try: db.save_comment(db.save_user(user_data), comment)      # save user and use returned user_id to save comment
-    except BaseException as e: message = str(e)
+    try: db.save_comment(db.save_user(user_data), comment)      # save user then use returned user_id to save comment
+    except BaseException as e:
+        error = True
+        message = str(e)                 # TODO:: Обработка ошибки БД
     return success_json({'error': error, 'message': message})
 
 def comment(request:'Request', **kwargs):

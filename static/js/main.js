@@ -22,9 +22,16 @@ if (deleteCommentButtons) {
 
 function sendComment(e) {
     e.preventDefault()
-    var form = new FormData();
     var btn = e.target;
+    var form_data = ''
+    var form = new FormData(document.getElementById('add_comment'));
+    for (var key of form.keys()){form_data += key+'='+form.get(key) + '&'}
 
+    var callback = function (data) {
+        alert(data)
+    }
+
+    ajaxRequest('/save_comment', form_data, callback)
 }
 
 function loadCities() {
@@ -62,6 +69,8 @@ function ajaxRequest(url, data, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
+            return callback(this.responseText);
+        }else if (this.readyState == 4 && this.status == 402) {
             return callback(this.responseText);
         }
     };

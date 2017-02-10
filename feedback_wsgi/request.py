@@ -34,7 +34,7 @@ class Request:
         self.route = env['PATH_INFO']
         self.method = env['REQUEST_METHOD']
         self.__query = parse_qs(env['QUERY_STRING'])
-        self.__post = cgi.FieldStorage(fp=env['wsgi.input'], environ=env)
+        self.__post = cgi.FieldStorage(fp=env['wsgi.input'], environ=env,  keep_blank_values=1)
 
     def _validate_token(self,token):
         with open('cache.txt', 'rb+') as f:
@@ -43,3 +43,4 @@ class Request:
                 f.truncate(0)
                 return True
             else: return False
+
