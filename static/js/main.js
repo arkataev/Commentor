@@ -4,7 +4,7 @@
 var region = document.getElementById('region');
 var deleteCommentButtons = document.querySelectorAll('#comments li button');
 var sendCommentBtn = document.getElementById('send_comment')
-sendCommentBtn.addEventListener('click', sendComment)
+if (sendCommentBtn) {sendCommentBtn.addEventListener('click', sendComment)}
 
 if (region){
     window.onload = loadCities;
@@ -13,6 +13,7 @@ if (region){
 
 if (deleteCommentButtons) {
     deleteCommentButtons.forEach(function(btn) {
+        console.log(btn)
         btn.addEventListener('click', function (e) {
             return deleteComment(e.target)
         })

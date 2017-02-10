@@ -54,6 +54,7 @@ table {
 
 #wrapper {
     width: 100%;
+    min-height: 1080px;
     padding: 50px 0;
     margin: 0 auto;
     background: #343434;
@@ -132,8 +133,7 @@ button {
 }
 
 .links {
-    padding:0;
-    text-align: center;
+    margin-top: 20px;
 }
 
 .links li {
@@ -146,4 +146,63 @@ a {
     color: #D33F49;
     text-decoration: none;
     text-align: left;
+}
+
+.page-title {
+    width: 40%;
+    margin: auto;
+    margin-bottom: 35px;
+}
+
+#comments {
+    width: 40%;
+    margin: auto;
+}
+
+#comments .comment {
+    clear: both;
+    overflow: hidden;
+    background: #FCD68A;
+    padding: 20px;
+    color: #343434;
+    margin-bottom: 15px;
+}
+
+.comment .user {
+    display: block;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.comment p {
+    display: inline-block;
+    width: 65%;
+}
+
+.comment button {
+    display: inline-block;
+    width: 120px;
+    float: right;
+}
+
+#stats {
+    width: 40%;
+    margin: auto;
+
+}
+
+#stats .headers th {
+    height: 30px;
+    vertical-align: middle;
+    font-weight: 600;
+    background: #FCD68A;
+}
+
+#stats td {
+    text-align: center;
+    border-bottom: 1px solid #FCD68A;
+    height: 40px;
+    vertical-align: middle;
+    color: #EADEDA;
 }
