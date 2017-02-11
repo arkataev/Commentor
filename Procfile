@@ -1,2 +1,2 @@
-web: gunicorn -c setup.py -b :$PORT wsgi:run $PORT
+web: python3 feedback_wsgi
 ps:scale web=1
