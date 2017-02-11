@@ -10,8 +10,8 @@ from gunicorn.six import iteritems
 import multiprocessing
 from wsgi import run
 
-HOST = '127.0.0.1'
-
+HOST = sys.argv[1]
+PORT = sys.argv[2]
 
 class CommentorApp(gunicorn.app.base.BaseApplication):
 
@@ -32,7 +32,7 @@ class CommentorApp(gunicorn.app.base.BaseApplication):
 
 if __name__ == '__main__':
     options = {
-        'bind': '%s:%s' % (HOST, sys.argv[1]),
+        'bind': '%s:%s' % (HOST, PORT),
         'workers': multiprocessing.cpu_count() * 2 + 1,
         'access_log_format': "%(h)s %(q)s %(U)s %(s)s %(b)s"
     }
