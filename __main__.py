@@ -9,7 +9,7 @@ from gunicorn.six import iteritems
 import multiprocessing
 from wsgi import run
 
-HOST = '192.168.33.10'
+HOST = '127.0.0.1'
 
 
 class CommentorApp(gunicorn.app.base.BaseApplication):
