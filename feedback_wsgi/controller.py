@@ -28,7 +28,7 @@ def add_comment(request:'Request'):
     try: db.save_comment(db.save_user(user_data), comment)
     except BaseException as e:
         error = True
-        message = str(e)                 # TODO:: Обработка ошибки БД
+        message = str(e)
     return success_json({'error': error, 'message': message})
 
 def comment(request:'Request', **kwargs):
@@ -67,6 +67,6 @@ def view_comments(request:'Request'):
     html = str()
     for c in comments:
         html += '<li class="comment"><span class="user">{fname} {lname}</span><p>{comment}</p>' \
-                '<button data-uid="{uid}">Удалить</button></li>\n'.format(
+                '<button data-uid="{uid}">Delete</button></li>\n'.format(
                 fname=c[2], lname=c[3], comment=c[1], uid=c[0])
     return render('view.html', comments=html)

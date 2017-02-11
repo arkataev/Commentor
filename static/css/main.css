@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Oswald');
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -50,6 +52,15 @@ table {
 * {
     font-family: Arial;
     font-weight: 400;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+
+}
+
+h1 {
+    font-family: 'Oswald', sans-serif;
 }
 
 #wrapper {
@@ -57,7 +68,7 @@ table {
     min-height: 1080px;
     padding: 50px 0;
     margin: 0 auto;
-    background: #343434;
+    background: #FFFCF2;
 }
 #comment {
     width: 25%;
@@ -76,7 +87,7 @@ table {
     padding: 10px 0;
     border: none;
     box-shadow: none;
-    color: #EADEDA;
+    color: #343434;
     margin-bottom: 15px;
     background: none;
     font-weight: 600;
@@ -85,13 +96,13 @@ table {
     font-size: 1.1em;
 }
 select option {
-    background: #343434;
+    background: #FFFCF2;
     border: none;
     font-weight: 600;
 }
 
 label {
-    color: #EADEDA;
+    color: #B7B6C2;
     margin-bottom: 10px;
     display: block;
     font-size: 0.8em;
@@ -100,7 +111,7 @@ label {
 textarea {
     width: 90%;
     padding: 20px;
-    color: #EADEDA;
+    color: #343434;
     background: inherit;
 }
 
@@ -109,14 +120,14 @@ textarea {
 }
 
 h1 {
-    color: #EADEDA;
+    color: #343434;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 6.5px;
     margin-bottom: 30px;
     border-bottom: 1px solid;
     padding: 10px 0;
-    font-size: 1.3em;
+    font-size: 1.8em;
 }
 
 button {
@@ -152,6 +163,10 @@ a {
     width: 40%;
     margin: auto;
     margin-bottom: 35px;
+    ;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #EADEDA;
 }
 
 #comments {
@@ -204,5 +219,5 @@ a {
     border-bottom: 1px solid #FCD68A;
     height: 40px;
     vertical-align: middle;
-    color: #EADEDA;
+    color: #B7B6C2;
 }

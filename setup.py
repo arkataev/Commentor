@@ -1,7 +1,11 @@
 import multiprocessing
 
-bind = "127.0.0.1"
+bind = "192.168.33.10:8000"
 workers = multiprocessing.cpu_count()
 errorlog = '-'
 accesslog = '-'
 access_log_format = "%(h)s %(q)s %(U)s %(s)s %(b)s"
+
+if __name__ == '__main__' :
+    # Create db file if not exists
+    pass

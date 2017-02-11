@@ -16,8 +16,6 @@ def get_locations(region_id):
     return cur.fetchall()
 
 def save_comment(user_id, comment):
-    # TODO:: Триггер на проверку уникальности пользователя.
-    # Если пользователь с таким email существует, вернуть его id
     stmt = "INSERT INTO comments (text, user_id) VALUES (?, ?)"
     try:
         cur.execute(stmt, (comment, user_id))
