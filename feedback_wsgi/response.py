@@ -38,9 +38,11 @@ def page_not_found(fname, **kwargs):
     return Renderer().render(fname, **kwargs)
 
 def set_token():
+    cache_file = 'cache.txt'
+    mode = 'xb+' if not os.path.exists(cache_file) else 'rb+'
     try:
         # check if token already set
-        with open('cache.txt', 'rb+') as f:
+        with open('cache.txt', mode) as f:
             cached_token = pickle.load(f)
             token = cached_token['token']
     except EOFError:
