@@ -1,5 +1,6 @@
 try:
     import os
+    import sys
     import gunicorn
 except ImportError:
     os.system('pip install -r .requirements.txt')
@@ -31,7 +32,7 @@ class CommentorApp(gunicorn.app.base.BaseApplication):
 
 if __name__ == '__main__':
     options = {
-        'bind': '%s:%s' % (HOST, '8080'),
+        'bind': '%s:%s' % (HOST, sys.argv[1]),
         'workers': multiprocessing.cpu_count() * 2 + 1,
         'access_log_format': "%(h)s %(q)s %(U)s %(s)s %(b)s"
     }
